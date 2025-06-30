@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# Env & Secrets
+.env
+.env.*
+
+# Django
+db.sqlite3
+/static/
+/media/
+
+# VSCode/PyCharm
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Virtual environment
+venv/
+django-venv/
+
+#sublime project
+.sublime-workspace
+.sublime-project
