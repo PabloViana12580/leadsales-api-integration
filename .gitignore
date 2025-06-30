@@ -26,5 +26,5 @@ venv/
 django-venv/
 
 #sublime project
-.sublime-workspace
-.sublime-project
+sublime-workspace
+sublime-project
