@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Funnels</title>
+</head>
+<body>
+    <h1>Funnels</h1>
+    <div>
+        {% for funnel in funnels %}
+            <h3> funnel leads: {{ funnel.leads_count}} </h3>
+            <button type="button">{{ funnel.funnel_name }}</button>
+        {% empty %}
+            <p>No funnels available.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
