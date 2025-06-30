@@ -24,7 +24,7 @@ class Funnel(models.Model):
 
 class Stage(models.Model):
 
-	funnel = models.OneToOneField(Funnel, on_delete=models.CASCADE, related_name='stage')
+	funnel = models.ForeignKey(Funnel, on_delete=models.CASCADE, related_name='stages')
 	stageid = models.CharField(max_length = 1000, primary_key = True)
 	stagename = models.CharField(max_length = 1000)
 	leads_count = models.IntegerField()
@@ -34,7 +34,7 @@ class Stage(models.Model):
 
 class Lead(models.Model):
 
-	stage = models.OneToOneField(Stage, on_delete=models.CASCADE, related_name='lead')
+	stage = models.ForeignKey(Stage, on_delete=models.CASCADE, related_name='lead')
 	leadid = models.CharField(max_length = 1000, primary_key = True)
 	value = models.IntegerField()
 	company = "logicomer"

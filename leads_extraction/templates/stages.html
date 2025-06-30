@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stages</title>
+</head>
+<body>
+    <h1>Stages</h1>
+    <div>
+        {% for stage in stages %}
+            <h3> stage leads: {{ stage.leads_count}} </h3>
+            <button type="button">{{ stage.stagename }}</button>
+        {% empty %}
+            <p>No stage available.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
