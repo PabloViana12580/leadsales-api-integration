@@ -8,7 +8,9 @@
     <div>
         {% for funnel in funnels %}
             <h3> funnel leads: {{ funnel.leads_count}} </h3>
-            <button type="button">{{ funnel.funnel_name }}</button>
+            <a href="{% url 'leads:funnel_stages' funnel.funnelid %}">
+                <button type="button">{{ funnel.funnel_name }}</button>
+            </a>
         {% empty %}
             <p>No funnels available.</p>
         {% endfor %}

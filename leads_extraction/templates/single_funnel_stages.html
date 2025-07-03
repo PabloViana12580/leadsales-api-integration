@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stages</title>
+</head>
+<body>
+    <h1>Stages for Funnel: {{ funnel.funnel_name }}</h1>
+
+    <ul>
+      {% for stage in stages %}
+        <li>{{ stage.stagename }} - {{ stage.leads_count }} leads <button type="button">{{ stage.stagename }}</button> </li>
+      {% empty %}
+        <li>No stages available for this funnel.</li>
+      {% endfor %}
+    </ul>
+</body>
+</html>
