@@ -8,9 +8,16 @@
 
     <ul>
       {% for stage in stages %}
-        <li>{{ stage.stagename }} - {{ stage.leads_count }} leads <button type="button">{{ stage.stagename }}</button> </li>
+        <li>
+            {{ stage.stagename }} - {{ stage.leads_count }} leads 
+            <a href="{% url 'leads:leads_for_stage' stage.stageid %}">
+                <button>View Leads</button>
+            </a>
+        </li>
       {% empty %}
-        <li>No stages available for this funnel.</li>
+        <li>
+            No stages available for this funnel.
+        </li>
       {% endfor %}
     </ul>
 </body>

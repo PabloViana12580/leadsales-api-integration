@@ -36,15 +36,11 @@ class Lead(models.Model):
 
 	stage = models.ForeignKey(Stage, on_delete=models.CASCADE, related_name='lead')
 	leadid = models.CharField(max_length = 1000, primary_key = True)
-	value = models.IntegerField()
-	company = "logicomer"
+	value = models.FloatField()
+	company = models.TextField()
 	funnel = models.TextField()
 	phonenumber = PhoneNumberField(region=None)
 	status = models.TextField()
 	email = models.EmailField()
 	name = models.TextField()
 	user_assgnee = models.TextField()
-
-	#String method of the class
-	def __str__(self):
-		return self.phonenumber

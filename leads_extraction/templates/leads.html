@@ -1,0 +1,26 @@
+<h1>Leads for this Stage</h1>
+
+<table border="1">
+  <tr>
+    <th>leadid</th>
+    <th>stage</th>
+    <th>Phone</th>
+    <th>status</th>
+    <th>email</th>
+    <th>name</th>
+    <th>Usuario asignado</th>
+  </tr>
+  {% for lead in leads %}
+    <tr>
+      <td>{{ lead.leadid }}</td>
+      <td>{{ lead.funnel.stage.name }}</td>
+      <td>{{ lead.handle }}</td>
+      <td>{{ lead.status }}</td>
+      <td>{{ lead.email }}</td>
+      <td>{{ lead.name }}</td>
+      <td>{{ lead.user_assgnee }}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="4">No leads found.</td></tr>
+  {% endfor %}
+</table>

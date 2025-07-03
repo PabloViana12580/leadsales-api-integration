@@ -2,7 +2,9 @@ from datetime import datetime
 import requests
 import environ
 import os
+import json
 from pathlib import Path
+from .models import Stage
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -14,7 +16,7 @@ env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 ls_sales_endpoint = "https://public.leadsales.services/v1/funnels"
-ls_auth_endopoit = "https://public.leadsales.services/v1/auth/token"
+ls_auth_endpoint = "https://public.leadsales.services/v1/auth/token"
 
 def get_auth_token():
 
@@ -32,9 +34,15 @@ def get_auth_token():
     	"Referer": "https://leadsales.io/"
 	}
 
-	response = requests.post(ls_auth_endopoit, json=payload, headers=headers).json()
+	response = requests.post(ls_auth_endpoint, json=payload, headers=headers)
 
-	ACCESS_TOKEN = response["access_token"]
+	try:
+	    data = response.json()
+	except json.JSONDecodeError:
+	    print("Failed to decode JSON. Raw response:", response.text)
+	    data = {}
+
+	ACCESS_TOKEN = data["access_token"]
 
 	headers["Authorization"] = f'Bearer {ACCESS_TOKEN}'
 	
@@ -43,6 +51,42 @@ def get_auth_token():
 def get_funnels():
 
 	headers_auth = get_auth_token()
-	funnels_data = requests.get(ls_sales_endpoint, headers=headers_auth).json().get("data", [])
+	funnels_data = requests.get(ls_sales_endpoint, headers=headers_auth)
 
-	return funnels_data
+	try:
+	    data = funnels_data.json().get("data", [])
+	except json.JSONDecodeError:
+	    print("Failed to decode JSON. Raw response:", response.text)
+	    data = {}
+
+	return data
+
+def get_leads_for_stage(stageid):
+	stage_instance = Stage.objects.get(stageid=stageid)
+	headers_auth = get_auth_token()
+	print(f"⏳ Fetching leads for stage: {stage_instance.stagename} ({stage_instance.leads_count} leads expected)")
+
+	leads = []
+	url = f'https://public.leadsales.services/v1/leads/{stage_instance.stageid}'
+	
+	while url:
+		response = requests.get(url, headers=headers_auth)
+
+		print("STATUS:", response.status_code)
+		print("TEXT:", response.text)  # see what you actually got back
+
+		try:
+		    data = response.json()
+		except json.JSONDecodeError:
+		    print("Failed to decode JSON. Raw response:", response.text)
+		    data = {}
+		
+		if "data" in data:
+			leads.extend(data["data"])
+
+		url = data.get("pagination", {}).get("next_page_url")
+
+		print(f"✅ Collected {len(leads)} leads from stage '{stage_instance.stagename}'.")
+
+	return leads
+

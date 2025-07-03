@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Funnel, Stage, Lead
-from .utils import get_funnels
+from .utils import get_funnels, get_leads_for_stage
 
 # Create your views here.
 def index(request):
@@ -76,3 +76,27 @@ def single_funnel_stages(request, funnelid):
         "funnel": funnel,
         "stages": stages,
     })
+
+def leads_view(request, stageid):
+    leads = get_leads_for_stage(stageid)
+
+    stage_instance = Stage.objects.get(stageid=stageid)
+
+    for lead in leads:
+        Lead.objects.update_or_create(
+            leadid = lead["id"],
+            defaults={
+                'stage': stage_instance,
+                'value': lead["value"],
+                'company': "Logicomer",
+                'funnel': lead["funnel"]["id"],
+                'phonenumber': lead["handle"],
+                'status': lead["status"],
+                'email': lead["email"],
+                'name': lead["name"],
+                'user_assgnee': lead.get('user_assgnee') or "Not Assign"
+            }
+        )
+
+
+    return render(request, "leads.html", {"leads": leads})
