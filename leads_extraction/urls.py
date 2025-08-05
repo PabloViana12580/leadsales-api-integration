@@ -5,7 +5,7 @@ from . import views
 
 app_name = "leads"
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", funnels_view, name="index"),
     path("funnels/", funnels_view, name='funnels'),
     path("stages/", stages_view, name='stages'),
     path('stages/<str:funnelid>/', single_funnel_stages, name='funnel_stages'),
