@@ -64,7 +64,7 @@ ROOT_URLCONF = 'logicomer.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -113,6 +113,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_REDIRECT_URL = "leads:index"
+LOGOUT_REDIRECT_URL = "leads:index"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
