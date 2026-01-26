@@ -1,1 +1,1 @@
-web: gunicorn leadsales-api-integration.wsgi
+web: gunicorn logicomer.wsgi
