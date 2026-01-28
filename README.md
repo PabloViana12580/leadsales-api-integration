@@ -74,84 +74,8 @@ Simple, maintainable, and production-oriented architecture.
 ```bash
 git clone https://github.com/PabloViana12580/leadsales-api-integration.git
 cd leadsales-api-integration
-
-<p align="center">
-  <img src="banner.png" alt="LeadSales API Integration Banner" width="100%">
-</p>
-
-<h1 align="center">🚀 LeadSales API Integration</h1>
-
-<p align="center">
-  Django backend for integrating, organizing, and exporting LeadSales CRM data
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Django-Backend-green?style=flat-square&logo=django" />
-  <img src="https://img.shields.io/badge/PostgreSQL-Database-blue?style=flat-square&logo=postgresql" />
-  <img src="https://img.shields.io/badge/Deployment-Railway-purple?style=flat-square&logo=railway" />
-  <img src="https://img.shields.io/badge/Status-Delivered-success?style=flat-square" />
-</p>
-
----
-
-# 🚀 LeadSales API Integration with Django
-
-A Django-based backend application built to solve a real limitation in **LeadSales CRM**:  
-the lack of flexible organization and export of leads outside their platform.
-
-This project integrates directly with the LeadSales API, persists data locally, and exposes it in a structured, performant, and extensible way.
-
-Built as a **solo developer** for a **real client** and delivered for production use.
-
----
-
-## 🧠 The Problem
-
-LeadSales provides valuable CRM functionality, but:
-- Leads are difficult to organize outside the platform
-- Export options are limited
-- External reporting requires direct API consumption
-
-For a business, this means friction, manual work, and lost time.
-
-This project solves that by creating a custom backend layer with full control over lead data.
-
----
-
-## ✨ Features
-
-- 🔗 Direct integration with the LeadSales API
-- 📊 Fetches and structures:
-  - Funnels
-  - Stages
-  - Leads per stage
-- 🧱 Persists external data into Django models
-- 🔐 Secure configuration using environment variables
-- ⚡ Optimized HTTP requests for faster responses
-- 🧩 Extensible architecture ready for reporting and exports
-
----
-
-## 🧱 Tech Stack
-
-- Django  
-- PostgreSQL  
-- HTML  
-- CSS  
-- Railway  
-
-Simple, maintainable, and production-oriented architecture.
-
----
-
-## 🚀 Getting Started
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/PabloViana12580/leadsales-api-integration.git
-cd leadsales-api-integration
 ```
+
 ### 2. Set up a virtual environment
 ```bash
 python3 -m venv venv
