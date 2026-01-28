@@ -1,139 +1,167 @@
-# 🌀 Lead Sales API Integration with Django
+<p align="center">
+  <img src="docs/banner.png" alt="LeadSales API Integration Banner" width="100%">
+</p>
 
-This is a Django-based web application that integrates with the [LeadSales](https://leadsales.io) API to fetch and display sales data in a structured, user-friendly format.
+<h1 align="center">🚀 LeadSales API Integration</h1>
+
+<p align="center">
+  Django backend for integrating, organizing, and exporting LeadSales CRM data
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Django-Backend-green?style=flat-square&logo=django" />
+  <img src="https://img.shields.io/badge/PostgreSQL-Database-blue?style=flat-square&logo=postgresql" />
+  <img src="https://img.shields.io/badge/Deployment-Railway-purple?style=flat-square&logo=railway" />
+  <img src="https://img.shields.io/badge/Status-Delivered-success?style=flat-square" />
+</p>
 
 ---
 
-## 📦 Features
+# 🚀 LeadSales API Integration with Django
 
-- 🔄 Fetches and displays:
+A Django-based backend application built to solve a real limitation in **LeadSales CRM**:  
+the lack of flexible organization and export of leads outside their platform.
+
+This project integrates directly with the LeadSales API, persists data locally, and exposes it in a structured, performant, and extensible way.
+
+Built as a **solo developer** for a **real client** and delivered for production use.
+
+---
+
+## 🧠 The Problem
+
+LeadSales provides valuable CRM functionality, but:
+- Leads are difficult to organize outside the platform
+- Export options are limited
+- External reporting requires direct API consumption
+
+For a business, this means friction, manual work, and lost time.
+
+This project solves that by creating a custom backend layer with full control over lead data.
+
+---
+
+## ✨ Features
+
+- 🔗 Direct integration with the LeadSales API
+- 📊 Fetches and structures:
   - Funnels
   - Stages
-  - Leads in each stage
-- 🎛️ Dynamically generates buttons for each funnel
-- 🗂️ Loads data into Django models
-- 🔐 Uses `.env` for secure API token and database settings
+  - Leads per stage
+- 🧱 Persists external data into Django models
+- 🔐 Secure configuration using environment variables
+- ⚡ Optimized HTTP requests for faster responses
+- 🧩 Extensible architecture ready for reporting and exports
+
+---
+
+## 🧱 Tech Stack
+
+- Django  
+- PostgreSQL  
+- HTML  
+- CSS  
+- Railway  
+
+Simple, maintainable, and production-oriented architecture.
 
 ---
 
 ## 🚀 Getting Started
 
-### 1. 📥 Clone the Repository
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/lead-sales-api-django.git
-cd lead-sales-api-django
-```
+git clone https://github.com/PabloViana12580/leadsales-api-integration.git
+cd leadsales-api-integration
+
+<p align="center">
+  <img src="banner.png" alt="LeadSales API Integration Banner" width="100%">
+</p>
+
+<h1 align="center">🚀 LeadSales API Integration</h1>
+
+<p align="center">
+  Django backend for integrating, organizing, and exporting LeadSales CRM data
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Django-Backend-green?style=flat-square&logo=django" />
+  <img src="https://img.shields.io/badge/PostgreSQL-Database-blue?style=flat-square&logo=postgresql" />
+  <img src="https://img.shields.io/badge/Deployment-Railway-purple?style=flat-square&logo=railway" />
+  <img src="https://img.shields.io/badge/Status-Delivered-success?style=flat-square" />
+</p>
 
 ---
 
-### 2. 🧪 Set Up the Python Virtual Environment
+# 🚀 LeadSales API Integration with Django
 
+A Django-based backend application built to solve a real limitation in **LeadSales CRM**:  
+the lack of flexible organization and export of leads outside their platform.
+
+This project integrates directly with the LeadSales API, persists data locally, and exposes it in a structured, performant, and extensible way.
+
+Built as a **solo developer** for a **real client** and delivered for production use.
+
+---
+
+## 🧠 The Problem
+
+LeadSales provides valuable CRM functionality, but:
+- Leads are difficult to organize outside the platform
+- Export options are limited
+- External reporting requires direct API consumption
+
+For a business, this means friction, manual work, and lost time.
+
+This project solves that by creating a custom backend layer with full control over lead data.
+
+---
+
+## ✨ Features
+
+- 🔗 Direct integration with the LeadSales API
+- 📊 Fetches and structures:
+  - Funnels
+  - Stages
+  - Leads per stage
+- 🧱 Persists external data into Django models
+- 🔐 Secure configuration using environment variables
+- ⚡ Optimized HTTP requests for faster responses
+- 🧩 Extensible architecture ready for reporting and exports
+
+---
+
+## 🧱 Tech Stack
+
+- Django  
+- PostgreSQL  
+- HTML  
+- CSS  
+- Railway  
+
+Simple, maintainable, and production-oriented architecture.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/PabloViana12580/leadsales-api-integration.git
+cd leadsales-api-integration
+```
+### 2. Set up a virtual environment
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
 
----
+### 3. Create a .env file
 
-### 3. 🛠️ Create Your `.env` File
-
-Create a `.env` file in the project root:
-
-```env
-DJANGO_SECRET_KEY=DJANGO_SECRET_KEY
-DEBUG=DEBUG
-
-DB_NAME=DB_NAME
-DB_USER=DB_USER
-DB_PASSWORD=DB_PASSWORD
-DB_HOST=DB_HOST
-DB_PORT=DB_PORT
-WORKSPACE_ID=WORKSPACE_ID
-PUBLISHABLE_KEY=PUBLISHABLE_KEY
-SECRET_KEY=SECRET_KEY
-```
-
----
-
-### 4. 🐘 Install and Configure PostgreSQL (Linux/Kali)
-
-#### ✅ Install PostgreSQL
-
-```bash
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-```
-
-#### ✅ Verify Installation
-
-```bash
-which psql
-```
-
-#### ✅ Start PostgreSQL (version 17 in this case)
-
-```bash
-sudo systemctl start postgresql@17-main
-```
-
-#### ✅ Check Status
-
-```bash
-sudo systemctl status postgresql@17-main
-```
-
-#### ✅ Open Postgres Shell
-
-```bash
-sudo -u postgres psql -p 5433
-```
-
-> ⚠️ Use the correct port shown by `pg_lsclusters`, typically 5433 for PostgreSQL 17.
-
-#### ✅ Create Database & User
-
-Inside the `psql` shell:
-
-```sql
-CREATE DATABASE leadsales_db;
-CREATE USER leadsales_user WITH PASSWORD 'your_password';
-GRANT ALL PRIVILEGES ON DATABASE leadsales_db TO leadsales_user;
-\q
-```
-
----
-
-### 5. 🧬 Run Migrations
-
-```bash
-python manage.py makemigrations
-python manage.py migrate
-```
-
----
-
-### 6. ✅ Run the Server
-
-```bash
-python manage.py runserver
-```
-
----
-
-## 📂 Project Structure
-
-```
-lead-sales-api-django/
-├── app/
-├── manage.py
-├── requirements.txt
-├── .env
-└── README.md
-```
-
----
+Create a .env file in the project root:
 
 ## 🔐 Environment Variables Reference
 
@@ -147,3 +175,81 @@ lead-sales-api-django/
 | `DB_PORT`           | PostgreSQL port (e.g. 5433)          |
 | `LEADSALES_API_KEY` | API token for LeadSales              |
 | `DEBUG`             | Django debug mode (True/False)       |
+
+## 🐘 PostgreSQL Setup (Linux)
+
+### 4. Install PostgreSQL
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+```
+
+### 5. Verify installation
+```bash
+which psql
+```
+
+### 6. Start PostgreSQL (example: version 17)
+```bash
+sudo systemctl start postgresql@17-main
+```
+
+### 7. Check PostgreSQL status
+```bash
+sudo systemctl status postgresql@17-main
+```
+
+### 8. Open PostgreSQL shell
+```bash
+sudo -u postgres psql -p 5433
+```
+Use pg_lsclusters to confirm the correct port.
+
+### 9. Create database and user
+```bash
+CREATE DATABASE leadsales_db;
+CREATE USER leadsales_user WITH PASSWORD 'your_password';
+GRANT ALL PRIVILEGES ON DATABASE leadsales_db TO leadsales_user;
+\q
+```
+
+## 🧬 Database Migrations
+### 10. Run migrations
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### ▶️ Run the Server
+```bash
+11. Start the development server
+python manage.py runserver
+```
+
+### 📂 Project Structure
+```
+leadsales-api-integration/
+├── app/
+├── manage.py
+├── requirements.txt
+├── .env
+└── README.md
+```
+## 📌 Project Status
+
+- Delivered to client
+
+- Actively used
+
+- Production-ready
+
+- Open for extension (exports, dashboards, analytics)
+
+## 👨‍💻 Author
+```
+Pablo Viana
+Backend Developer
+Django · APIs · Data Engineering
+```
+If you find this project useful or interesting, a ⭐ on the repository is always appreciated.
+
