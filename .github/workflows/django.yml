@@ -10,6 +10,18 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      DJANGO_SECRET_KEY:"f9(_1lv=g(eviu(3i(^g=dsg%12ubf69+7v=la%4sx7kf4mxz%"
+      DEBUG:"True"
+      DB_NAME:"logicomer"
+      DB_USER:"postgres"
+      DB_PASSWORD:"viana"
+      DB_HOST:"localhost"
+      DB_PORT:"5432"
+      WORKSPACE_ID:"1cb200a4-8740-43d9-abe8-9a096895e257"
+      PUBLISHABLE_KEY:"pk_dngm5z0tbuygtfy2f6tbggwq"
+      SECRET_KEY:"sk_0q9c657mj15vw2z5a0nk91l9"
+    
     strategy:
       max-parallel: 4
       matrix:
