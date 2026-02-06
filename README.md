@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="banner.png" alt="LeadSales API Integration Banner" width="100%">
-</p>
-
 <h1 align="center">🚀 LeadSales API Integration</h1>
 
 <p align="center">
@@ -40,6 +36,28 @@ For a business, this means friction, manual work, and lost time.
 This project solves that by creating a custom backend layer with full control over lead data.
 
 ---
+
+## 🧠 How those it look? 
+
+- It has a fully funcitonal authentication system leveragin User authentication in Django. Which means you can also CRUD users from the admin panel.
+
+<p align="center">
+  <img src="screenshots/Logicomer Login.png" alt="App login" width="100%">
+</p>
+
+- Once you log-in you are able to travel the hierarchy of funnels -> stages -> leads for all the ones that you have created and work in LeadSales, with the ability to export an specific subset of leads to CSV and excel formats.
+
+<p align="center">
+  <img src="screenshots/Logicomer Funnels.png" alt="App Funnels" width="100%">
+</p>
+
+<p align="center">
+  <img src="screenshots/Logicomer Stages.png" alt="App Stages" width="100%">
+</p>
+
+<p align="center">
+  <img src="screenshots/Logicomer Leads.png" alt="App Leads" width="100%">
+</p>
 
 ## ✨ Features
 
