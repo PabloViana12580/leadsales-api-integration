@@ -96,6 +96,9 @@ DATABASES = {
     }
 }
 """
+
+print("🚨 DATABASE_URL USED:", os.environ.get("DATABASE_URL"))
+
 DATABASES = {
     "default": dj_database_url.config(
         default=env("DATABASE_URL", default=None),
