@@ -1,26 +1,30 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, StreamingHttpResponse
 from .models import Funnel, Stage, Lead
-from .utils import get_funnels, get_leads_for_stage
+from .utils import get_funnels, get_leads_for_stage, iter_leads_for_stage
 import csv
+
+
+def save_stage_lead(stage_instance, lead):
+    Lead.objects.update_or_create(
+        leadid=lead["id"],
+        defaults={
+            "stage": stage_instance,
+            "value": lead.get("value") or 0,
+            "company": "Logicomer",
+            "funnel": lead.get("funnel", {}).get("id", ""),
+            "phonenumber": lead.get("handle", ""),
+            "status": lead.get("status", ""),
+            "email": lead.get("email", ""),
+            "name": lead.get("name", ""),
+            "user_assgnee": lead.get("user_assgnee") or "Not Assign",
+        },
+    )
 
 
 def save_stage_leads(stage_instance, leads):
     for lead in leads:
-        Lead.objects.update_or_create(
-            leadid=lead["id"],
-            defaults={
-                "stage": stage_instance,
-                "value": lead.get("value") or 0,
-                "company": "Logicomer",
-                "funnel": lead.get("funnel", {}).get("id", ""),
-                "phonenumber": lead.get("handle", ""),
-                "status": lead.get("status", ""),
-                "email": lead.get("email", ""),
-                "name": lead.get("name", ""),
-                "user_assgnee": lead.get("user_assgnee") or "Not Assign",
-            },
-        )
+        save_stage_lead(stage_instance, lead)
 
 
 class Echo:
@@ -116,9 +120,7 @@ def leads_view(request, stageid):
 
 def export_leads_csv(request, stage_id):
     stage_instance = get_object_or_404(Stage, stageid=stage_id)
-    api_leads = get_leads_for_stage(stage_id)
-    save_stage_leads(stage_instance, api_leads)
-    total_leads = len(api_leads)
+    expected_leads = stage_instance.leads_count
 
     def stream_csv_rows():
         writer = csv.writer(Echo())
@@ -134,7 +136,8 @@ def export_leads_csv(request, stage_id):
             "Usuario Asignado"
         ])
 
-        for lead in api_leads:
+        for lead in iter_leads_for_stage(stage_id):
+            save_stage_lead(stage_instance, lead)
             yield writer.writerow([
                 stage_instance.stagename,
                 lead.get("value") or 0,
@@ -152,6 +155,6 @@ def export_leads_csv(request, stage_id):
         content_type="text/csv",
         headers={"Content-Disposition": 'attachment; filename="leads.csv"'},
     )
-    response["X-Lead-Count"] = total_leads
+    response["X-Lead-Count"] = expected_leads
     response["Cache-Control"] = "no-store"
     return response
