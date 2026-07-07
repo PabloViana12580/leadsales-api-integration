@@ -128,7 +128,7 @@
         id="exportCsvButton"
         type="button"
         data-export-url="{% url 'leads:export_leads_csv' stageid %}"
-        data-total-leads="{{ leads|length }}"
+        data-total-leads="{{ stage.leads_count }}"
         data-filename="leads.csv"
         class="btn btn-outline-primary btn-sm"
       >
@@ -152,7 +152,7 @@
             </div>
             <div class="text-end">
               <div class="export-counter">
-                <span id="exportDownloadedCount">0</span>/<span id="exportTotalCount">{{ leads|length }}</span>
+                <span id="exportDownloadedCount">0</span>/<span id="exportTotalCount">{{ stage.leads_count }}</span>
               </div>
               <div class="small text-muted">leads downloaded</div>
             </div>
@@ -176,7 +176,7 @@
 
       <div class="d-flex justify-content-between align-items-center mb-2">
         <span class="text-muted">
-          Total leads: {{ leads|length }}
+          Fetched leads: {{ leads|length }} of {{ stage.leads_count }} expected
         </span>
       </div>
 
@@ -196,8 +196,8 @@
           <tbody>
             {% for lead in leads %}
             <tr>
-              <td>{{ lead.leadid }}</td>
-              <td>{{ lead.funnel.stage.name }}</td>
+              <td>{{ lead.id }}</td>
+              <td>{{ stage.stagename }}</td>
               <td>{{ lead.handle }}</td>
               <td>{{ lead.status }}</td>
               <td>{{ lead.email }}</td>

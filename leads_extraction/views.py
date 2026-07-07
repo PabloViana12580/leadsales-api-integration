@@ -5,6 +5,24 @@ from .utils import get_funnels, get_leads_for_stage
 import csv
 
 
+def save_stage_leads(stage_instance, leads):
+    for lead in leads:
+        Lead.objects.update_or_create(
+            leadid=lead["id"],
+            defaults={
+                "stage": stage_instance,
+                "value": lead.get("value") or 0,
+                "company": "Logicomer",
+                "funnel": lead.get("funnel", {}).get("id", ""),
+                "phonenumber": lead.get("handle", ""),
+                "status": lead.get("status", ""),
+                "email": lead.get("email", ""),
+                "name": lead.get("name", ""),
+                "user_assgnee": lead.get("user_assgnee") or "Not Assign",
+            },
+        )
+
+
 class Echo:
     def write(self, value):
         return value
@@ -85,37 +103,22 @@ def single_funnel_stages(request, funnelid):
     })
 
 def leads_view(request, stageid):
-    leads = get_leads_for_stage(stageid)
-
     stage_instance = Stage.objects.get(stageid=stageid)
+    leads = get_leads_for_stage(stageid)
+    save_stage_leads(stage_instance, leads)
 
-    for lead in leads:
-        Lead.objects.update_or_create(
-            leadid = lead["id"],
-            defaults={
-                'stage': stage_instance,
-                'value': lead["value"],
-                'company': "Logicomer",
-                'funnel': lead["funnel"]["id"],
-                'phonenumber': lead["handle"],
-                'status': lead["status"],
-                'email': lead["email"],
-                'name': lead["name"],
-                'user_assgnee': lead.get('user_assgnee') or "Not Assign"
-            }
-        )
-
-    return render(request, "leads.html", {"stageid": stageid, "leads": leads})
+    return render(request, "leads.html", {
+        "stageid": stageid,
+        "stage": stage_instance,
+        "leads": leads,
+    })
 
 
 def export_leads_csv(request, stage_id):
-    leads = (
-        Lead.objects
-        .select_related("stage")
-        .filter(stage_id=stage_id)
-        .iterator(chunk_size=100)
-    )
-    total_leads = Lead.objects.filter(stage_id=stage_id).count()
+    stage_instance = get_object_or_404(Stage, stageid=stage_id)
+    api_leads = get_leads_for_stage(stage_id)
+    save_stage_leads(stage_instance, api_leads)
+    total_leads = len(api_leads)
 
     def stream_csv_rows():
         writer = csv.writer(Echo())
@@ -131,17 +134,17 @@ def export_leads_csv(request, stage_id):
             "Usuario Asignado"
         ])
 
-        for lead in leads:
+        for lead in api_leads:
             yield writer.writerow([
-                lead.stage.stagename,
-                lead.value,
-                lead.company,
-                lead.funnel,
-                lead.phonenumber,
-                lead.status,
-                lead.email,
-                lead.name,
-                lead.user_assgnee
+                stage_instance.stagename,
+                lead.get("value") or 0,
+                "Logicomer",
+                lead.get("funnel", {}).get("id", ""),
+                lead.get("handle", ""),
+                lead.get("status", ""),
+                lead.get("email", ""),
+                lead.get("name", ""),
+                lead.get("user_assgnee") or "Not Assign"
             ])
 
     response = StreamingHttpResponse(

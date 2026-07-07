@@ -38,6 +38,70 @@
       font-weight: bold;
       font-size: 24px;
     }
+
+    .lead-loading-overlay {
+      align-items: center;
+      backdrop-filter: blur(5px);
+      background: rgba(224, 242, 255, 0.88);
+      display: none;
+      inset: 0;
+      justify-content: center;
+      position: fixed;
+      z-index: 1050;
+    }
+
+    .lead-loading-overlay.is-visible {
+      display: flex;
+    }
+
+    .lead-loading-card {
+      background: white;
+      border: 1px solid rgba(13, 110, 253, 0.18);
+      border-radius: 18px;
+      box-shadow: 0 20px 55px rgba(13, 110, 253, 0.22);
+      max-width: 440px;
+      padding: 2rem;
+      text-align: center;
+      width: calc(100% - 2rem);
+    }
+
+    .lead-loading-spinner {
+      animation: leadPulse 1.1s ease-in-out infinite;
+      background: radial-gradient(circle, rgba(13,110,253,0.2), rgba(13,110,253,0.05));
+      border-radius: 50%;
+      display: inline-flex;
+      height: 74px;
+      justify-content: center;
+      margin-bottom: 1rem;
+      position: relative;
+      width: 74px;
+      align-items: center;
+    }
+
+    .lead-loading-spinner::after {
+      animation: leadSpin 850ms linear infinite;
+      border: 4px solid rgba(13,110,253,0.14);
+      border-top-color: #0d6efd;
+      border-radius: 50%;
+      content: "";
+      inset: -6px;
+      position: absolute;
+    }
+
+    .lead-loading-count {
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    @keyframes leadSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes leadPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
   </style>
 </head>
 
@@ -92,7 +156,9 @@
 
             <a
               href="{% url 'leads:leads_for_stage' stage.stageid %}"
-              class="btn btn-light btn-sm mt-3">
+              class="btn btn-light btn-sm mt-3 js-load-leads"
+              data-stage-name="{{ stage.stagename }}"
+              data-leads-count="{{ stage.leads_count }}">
               View Leads
             </a>
           </div>
@@ -107,6 +173,56 @@
 
     </div>
   </div>
+
+  <div id="leadLoadingOverlay" class="lead-loading-overlay" role="status" aria-live="polite">
+    <div class="lead-loading-card">
+      <div class="lead-loading-spinner">
+        <i class="bi bi-people-fill text-primary fs-2"></i>
+      </div>
+      <h2 class="h4 text-primary mb-2">Getting leads from LeadSales...</h2>
+      <p id="leadLoadingStage" class="text-muted mb-3">Preparing the selected stage.</p>
+      <div class="lead-loading-count text-primary">
+        <span id="leadLoadingFetched">0</span>/<span id="leadLoadingTotal">0</span>
+      </div>
+      <div class="small text-muted mt-1">leads requested from the API</div>
+      <div class="progress mt-3" style="height: 12px;">
+        <div id="leadLoadingProgress" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 5%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const leadLoadingOverlay = document.getElementById("leadLoadingOverlay");
+    const leadLoadingStage = document.getElementById("leadLoadingStage");
+    const leadLoadingFetched = document.getElementById("leadLoadingFetched");
+    const leadLoadingTotal = document.getElementById("leadLoadingTotal");
+    const leadLoadingProgress = document.getElementById("leadLoadingProgress");
+
+    document.querySelectorAll(".js-load-leads").forEach((link) => {
+      link.addEventListener("click", () => {
+        const total = Number(link.dataset.leadsCount || 0);
+        const stageName = link.dataset.stageName || "this stage";
+
+        leadLoadingOverlay.classList.add("is-visible");
+        leadLoadingStage.textContent = `Fetching ${total.toLocaleString()} leads for ${stageName}.`;
+        leadLoadingTotal.textContent = total.toLocaleString();
+
+        let current = 0;
+        const step = Math.max(1, Math.ceil(total / 60));
+        const timer = setInterval(() => {
+          current = Math.min(total, current + step);
+          leadLoadingFetched.textContent = current.toLocaleString();
+          const percent = total === 0 ? 100 : Math.max(5, Math.min(95, Math.round((current / total) * 100)));
+          leadLoadingProgress.style.width = `${percent}%`;
+
+          if (current >= total) {
+            clearInterval(timer);
+            leadLoadingProgress.style.width = "95%";
+          }
+        }, 160);
+      });
+    });
+  </script>
 
 </body>
 </html>

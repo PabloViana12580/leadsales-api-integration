@@ -1,5 +1,6 @@
 from datetime import datetime
 import requests
+from urllib.parse import urljoin
 import environ
 import os
 import json
@@ -91,7 +92,8 @@ def get_leads_for_stage(stageid):
         if "data" in data:
             leads.extend(data["data"])
 
-        url = data.get("pagination", {}).get("next_page_url")
+        next_page_url = data.get("pagination", {}).get("next_page_url")
+        url = urljoin("https://public.leadsales.services", next_page_url) if next_page_url else None
 
         print(
             f"✅ Collected {len(leads)} leads from stage '{stage_instance.stagename}'."
