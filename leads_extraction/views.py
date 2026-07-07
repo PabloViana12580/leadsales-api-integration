@@ -1,8 +1,14 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from .models import Funnel, Stage, Lead
 from .utils import get_funnels, get_leads_for_stage
 import csv
+
+
+class Echo:
+    def write(self, value):
+        return value
+
 
 # Create your views here.
 def index(request):
@@ -103,43 +109,46 @@ def leads_view(request, stageid):
 
 
 def export_leads_csv(request, stage_id):
-    response = HttpResponse(
+    leads = (
+        Lead.objects
+        .select_related("stage")
+        .filter(stage_id=stage_id)
+        .iterator(chunk_size=100)
+    )
+    total_leads = Lead.objects.filter(stage_id=stage_id).count()
+
+    def stream_csv_rows():
+        writer = csv.writer(Echo())
+        yield writer.writerow([
+            "Stage",
+            "Value",
+            "Company",
+            "Funnel",
+            "Phonenumber",
+            "Status",
+            "Email",
+            "Name",
+            "Usuario Asignado"
+        ])
+
+        for lead in leads:
+            yield writer.writerow([
+                lead.stage.stagename,
+                lead.value,
+                lead.company,
+                lead.funnel,
+                lead.phonenumber,
+                lead.status,
+                lead.email,
+                lead.name,
+                lead.user_assgnee
+            ])
+
+    response = StreamingHttpResponse(
+        stream_csv_rows(),
         content_type="text/csv",
         headers={"Content-Disposition": 'attachment; filename="leads.csv"'},
     )
-
-    writer = csv.writer(response)
-    writer.writerow([
-        "Stage",
-        "Value",
-        "Company",
-        "Funnel",
-        "Phonenumber",
-        "Status",
-        "Email",
-        "Name",
-        "Usuario Asignado"
-    ])
-
-    leads = (
-        Lead.objects
-        .select_related("stage")   # ✅ only real FK
-        .filter(stage_id=stage_id)
-    )
-
-    for lead in leads:
-        writer.writerow([
-            lead.stage,
-            lead.value,
-            lead.company,
-            lead.funnel,
-            lead.phonenumber,
-            lead.status,
-            lead.email,
-            lead.name,
-            lead.user_assgnee
-        ])
-
+    response["X-Lead-Count"] = total_leads
+    response["Cache-Control"] = "no-store"
     return response
-
-    #return render(request, "leads.html", {"leads": leads})
